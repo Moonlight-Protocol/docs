@@ -155,7 +155,6 @@ flowchart TB
 
   TEMPLATE --> ALL
   linkStyle default stroke:#7DAEFF,stroke-width:1.5px           %% Lunar-Ice arrows
-
 ```
 
 Because every wallet follows the same formula, a user can back up one mnemonic or hardware key and later recreate the entire constellation of Moonlight addresses on a new device or with a different provider. Centralized control stays intact even as on-chain activity is fragmented, and no piece of the derivation path is exposed on the ledger, preventing clustering heuristics from linking addresses.
