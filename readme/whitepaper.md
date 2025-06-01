@@ -40,11 +40,124 @@ Moonlight replaces the single running balance of an account-based ledger with a 
 
 Transactions are executed as _bundles_ submitted to a channel contract. A bundle may involve one or many senders and one or many receivers; the on-chain record is simply a set of inputs and a set of outputs whose total values balance. Because address, identity, and amount are no longer linked in a one-to-one pattern, observers cannot infer counterparties or payment size from the ledger alone.
 
+```mermaid
+flowchart LR
+  %% ── palette-based styles ──────────────────────
+  classDef utxo fill:#8C7AFF,stroke:#2A2C33,color:#12131A,stroke-width:1px
+  classDef new  fill:#7DAEFF,stroke:#2A2C33,color:#12131A,stroke-width:1px
+  classDef meta fill:#F4EACB,stroke:#2A2C33,color:#12131A,stroke-width:1px
+
+  %% ── bundle container (Shadow Graphite frame) ─
+  subgraph B["Bundle Transaction"]
+    direction LR
+    style B fill:#2A2C33,stroke:#2A2C33,color:#E8E9F0
+
+    %% SPEND column
+    subgraph SPEND["SPEND"]
+      direction TB
+      style SPEND fill:transparent,stroke:#2A2C33,color:#E8E9F0
+      I1(UTXO&nbsp;#1<br/>500):::utxo
+      I2(UTXO&nbsp;#2<br/>750):::utxo
+      I3(UTXO&nbsp;#3<br/>800):::utxo
+      I4(UTXO&nbsp;#4<br/>450):::utxo
+    end
+
+    %% central processing node
+    TX((TX)):::meta
+
+    %% CREATE column
+    subgraph CREATE["CREATE"]
+      direction TB
+      style CREATE fill:transparent,stroke:#2A2C33,color:#E8E9F0
+      O1(UTXO&nbsp;#5<br/>700):::new
+      O2(UTXO&nbsp;#6<br/>600):::new
+      O3(UTXO&nbsp;#7<br/>800):::new
+      O4(UTXO&nbsp;#8<br/>300):::new
+      O5(UTXO&nbsp;#9<br/>100):::new
+    end
+
+    %% arrows: inputs → TX → outputs
+    I1 --> TX
+    I2 --> TX
+    I3 --> TX
+    I4 --> TX
+
+    TX --> O1
+    TX --> O2
+    TX --> O3
+    TX --> O4
+    TX --> O5
+  end
+
+  %% ── lighter arrow styling (Lunar Ice) ─────────
+  linkStyle default stroke:#7DAEFF,stroke-width:1.5px
+
+```
+
 The protocol deliberately leaves tuning space for _entropy_—the degree of fragmentation a wallet applies. Low-entropy settings keep balances concentrated in fewer addresses and minimise resource use and fees; high-entropy settings involve more inputs and outputs, raising cost but maximising privacy. Wallets can expose this spectrum to users, while privacy providers can offer tailored services that further randomise bundles, aggregate multiple users, or inject their own intermediary outputs. By allowing such strategies, Moonlight makes heuristic chain analysis exponentially harder without locking participants into a single privacy posture.
 
 ### Key Derivation Scheme
 
 Fragmentation is effective only if it remains invisible to the user. Moonlight hides the underlying web of UTXO addresses behind a single recovery secret by defining a deterministic derivation scheme. Part of the derivation path captures **context**—information about the environment where the keys will operate, such as “Stellar mainnet” and the contract ID of the chosen channel—while another part anchors to the **root secret** the user actually controls, whether that secret is a Stellar seed, an Ethereum private key, or any other cryptographic credential. A standardized stepping function then advances an index so that wallets can generate each new address in an orderly, repeatable sequence.
+
+```mermaid
+flowchart TB
+  classDef net  fill:#8C7AFF,stroke:#2A2C33,color:#12131A,stroke-width:1px
+  classDef ch   fill:#7DAEFF,stroke:#2A2C33,color:#12131A,stroke-width:1px
+  classDef sec  fill:#FF6B6B,stroke:#2A2C33,color:#FFFFFF,stroke-width:1px
+  classDef step fill:#F3F4F6,stroke:#2A2C33,color:#12131A,stroke-width:1px
+  classDef addr fill:#7DAEFF,stroke:#2A2C33,color:#12131A,stroke-width:1px
+  classDef box  fill:transparent,stroke:#2A2C33,color:#E8E9F0
+
+  subgraph TEMPLATE["Derivation Seed Schema"]
+    direction LR
+    NET["Network<br/>ID"]:::net --- CHA["Channel<br/>ID"]:::ch --- SEC["Master<br/>Secret"]:::sec --- IDX["Step n"]:::step
+  end
+  style TEMPLATE fill:#2A2C33,stroke:#2A2C33,color:#E8E9F0  %% dark-grey frame
+
+  subgraph ALL["Derived Addresses"]
+    direction LR
+    class ALL box
+
+    subgraph SEED0["Seed #0"]
+      direction LR
+      n0["Stellar Mainnet"]:::net --- c0["Channel 0x1234"]:::ch --- s0["Master Secret"]:::sec --- i0["Step 0"]:::step
+    end
+    class SEED0 box
+    kp0["keypair #0"]:::addr
+    SEED0 --> kp0
+
+    subgraph SEED1["Seed #1"]
+      direction LR
+      n1["Stellar Mainnet"]:::net --- c1["Channel 0x1234"]:::ch --- s1["Master Secret"]:::sec --- i1["Step 1"]:::step
+    end
+    class SEED1 box
+    kp1["keypair #1"]:::addr
+    SEED1 --> kp1
+
+    subgraph SEED2["Seed #2"]
+      direction LR
+      n2["Stellar Mainnet"]:::net --- c2["Channel 0x1234"]:::ch --- s2["Master Secret"]:::sec --- i2["Step 2"]:::step
+    end
+    class SEED2 box
+    kp2["keypair #2"]:::addr
+    SEED2 --> kp2
+
+    subgraph SEED3["Seed #3"]
+      direction LR
+      n3["Stellar Mainnet"]:::net --- c3["Channel 0x1234"]:::ch --- s3["Master Secret"]:::sec --- i3["Step 3"]:::step
+    end
+    class SEED3 box
+    kp3["keypair #3"]:::addr
+    SEED3 --> kp3
+  end
+  style ALL fill:#2A2C33,stroke:#2A2C33,color:#E8E9F0  %% dark-grey frame
+
+  TEMPLATE --> ALL
+
+  linkStyle default stroke:#7DAEFF,stroke-width:1.5px  %% Lunar-Ice arrows
+
+```
 
 Because every wallet follows the same formula, a user can back up one mnemonic or hardware key and later recreate the entire constellation of Moonlight addresses on a new device or with a different provider. Centralized control stays intact even as on-chain activity is fragmented, and no piece of the derivation path is exposed on the ledger, preventing clustering heuristics from linking addresses.
 
