@@ -34,7 +34,7 @@ What the ecosystem lacks is a solution that keeps assets on Stellar, preserves u
 
 Public blockchains achieve trust through transparency, but that same openness exposes several avenues for chain-analysis. Moonlight addresses each of these with purpose-built mechanisms that preserve self-custody and composability while removing the data points analysts rely on.
 
-#### UTXO Fragmentation: Eliminating Continuous Balance Trails
+### UTXO Fragmentation: Eliminating Continuous Balance Trails
 
 Moonlight replaces the single running balance of an account-based ledger with a UTXO model in which every transfer can consume several existing outputs and create several new ones. Value is continually fragmented: a payment may gather multiple small inputs, spend more than the face value of the intended transfer, and return change to fresh addresses controlled by the sender. The same operation can distribute funds across many outputs, some owned by the recipient and others retained by the sender, without revealing which belong to whom.
 
@@ -42,7 +42,7 @@ Transactions are executed as _bundles_ submitted to a channel contract. A bundle
 
 The protocol deliberately leaves tuning space for _entropy_—the degree of fragmentation a wallet applies. Low-entropy settings keep balances concentrated in fewer addresses and minimise resource use and fees; high-entropy settings involve more inputs and outputs, raising cost but maximising privacy. Wallets can expose this spectrum to users, while privacy providers can offer tailored services that further randomise bundles, aggregate multiple users, or inject their own intermediary outputs. By allowing such strategies, Moonlight makes heuristic chain analysis exponentially harder without locking participants into a single privacy posture.
 
-### Deterministic Multi-Address Derivation: Maintaining Control, Usability and Portability
+### Deterministic Multi-Address Derivation: Maintaining Control, Usability, and Portability
 
 Fragmentation is effective only if it remains invisible to the user. Moonlight hides the underlying web of UTXO addresses behind a single recovery secret by defining a deterministic derivation scheme. Part of the derivation path captures **context**—information about the environment where the keys will operate, such as “Stellar mainnet” and the contract ID of the chosen channel—while another part anchors to the **root secret** the user actually controls, whether that secret is a Stellar seed, an Ethereum private key, or any other cryptographic credential. A standardized stepping function then advances an index so that wallets can generate each new address in an orderly, repeatable sequence.
 
