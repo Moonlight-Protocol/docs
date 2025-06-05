@@ -100,8 +100,14 @@ The protocol deliberately leaves tuning space for _entropy_—the degree of frag
 
 Fragmentation is effective only if it remains invisible to the user. Moonlight hides the underlying web of UTXO addresses behind a single recovery secret by defining a deterministic derivation scheme. Part of the derivation path captures **context**—information about the environment where the keys will operate, such as “Stellar mainnet” and the contract ID of the chosen channel—while another part anchors to the **root secret** the user actually controls, whether that secret is a Stellar seed, an Ethereum private key, or any other cryptographic credential. A standardized stepping function then advances an index so that wallets can generate each new address in an orderly, repeatable sequence.
 
-```mermaid
+```mermaid fullWidth="true"
+
 flowchart TB
+  TEMPLATE --> ALL
+  linkStyle default stroke:#7DAEFF,stroke-width:1.5px           %% Lunar-Ice arrows
+	style ALL fill:#2A2C33,stroke:#2A2C33,color:#FFFFFF
+	style TEMPLATE fill:#2A2C33,stroke:#2A2C33,color:#FFFFFF
+    
   classDef net  fill:#8C7AFF,stroke:#2A2C33,color:#12131A,stroke-width:1px
   classDef ch   fill:#7DAEFF,stroke:#2A2C33,color:#12131A,stroke-width:1px
   classDef sec  fill:#FF6B6B,stroke:#2A2C33,color:#FFFFFF,stroke-width:1px
@@ -113,7 +119,6 @@ flowchart TB
     direction LR
     NET["Network<br/>ID"]:::net --- CHA["Channel<br/>ID"]:::ch --- SEC["Master<br/>Secret"]:::sec --- IDX["Step n"]:::step
   end
-  style TEMPLATE fill:#2A2C33,stroke:#2A2C33,color:#E8E9F0   %% dark-grey frame
 
   subgraph ALL["Derived Addresses"]
     direction LR
@@ -151,10 +156,6 @@ flowchart TB
     kp3["keypair #3"]:::addr
     SEED3 --> kp3
   end
-  style ALL fill:#2A2C33,stroke:#2A2C33,color:#E8E9F0          %% dark-grey frame
-
-  TEMPLATE --> ALL
-  linkStyle default stroke:#7DAEFF,stroke-width:1.5px           %% Lunar-Ice arrows
 ```
 
 Because every wallet follows the same formula, a user can back up one mnemonic or hardware key and later recreate the entire constellation of Moonlight addresses on a new device or with a different provider. Centralized control stays intact even as on-chain activity is fragmented, and no piece of the derivation path is exposed on the ledger, preventing clustering heuristics from linking addresses.
