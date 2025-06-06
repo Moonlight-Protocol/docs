@@ -4,7 +4,9 @@ icon: file-lines
 
 # Whitepaper
 
-
+{% hint style="warning" %}
+This document is a work in progress! Key concepts may still be adjusted prior to its first release.
+{% endhint %}
 
 ## Abstract
 
@@ -20,17 +22,17 @@ Moonlight was conceived to resolve that tension without fragmenting liquidity or
 
 The result is a system where balances and payments are private by default, regulatory needs are met through accountable providers, and control never leaves the user’s hands. Moonlight aims to make Stellar viable for everything from consumer wallets to enterprise treasuries by delivering privacy, composability, and compliance in one cohesive protocol layer.
 
-## The Privacy & Traceability Challenge
+## The Privacy Challenge on Public DLTs
 
 Stellar’s open ledger and other DLTs are designed for verifiability: every account, balance change, and payment path is publicly recorded and permanently accessible. That transparency fuels trust, yet it also invites sophisticated chain analysis. With a few queries, observers can correlate deposit patterns, payment routes, and order-book activity to identify counterparties and reconstruct entire cash-flow histories. For individuals, this means every purchase or salary receipt can be traced; for businesses, competitive strategies and supplier relationships are laid bare.
 
 For regulated institutions, the public nature of a blockchain poses a different cost: transparency **sacrifices confidentiality**. Because every transaction is linkable, a single exposed payment can deanonymize an entire historical balance sheet, making it difficult to satisfy data-protection mandates while still enjoying the native settlement guarantees of an open network. At the same time, frameworks such as the Travel Rule demand that originator and beneficiary information be available to the right parties on demand, tightening the paradox between privacy and visibility.
 
-Existing workarounds each carry heavy drawbacks. Custodial methods (mixers or private wallets) can obscure flows but require users to surrender control of their funds and place full trust in a third-party intermediary. Private side-chains create walled gardens, fragmenting liquidity and breaking composability with the broader blockchain ecosystem. Layering zero-knowledge proofs directly on account-based balances is theoretically possible, but it demands heavyweight circuits and complex trusted-setup workflows. Moonlight pursues the same privacy end-state with lighter, purpose-built techniques that align more naturally with Soroban’s efficient resource model.
+Existing workarounds each carry heavy drawbacks. Custodial methods (mixers or private wallets) can obscure flows but require users to surrender control of their funds and place full trust in a third-party intermediary. Private side-chains create walled gardens, fragmenting liquidity and breaking composability with the broader blockchain ecosystem. Layering zero-knowledge proofs directly on account-based balances is theoretically possible, but it may demand heavyweight circuits and complex trusted-setup workflows. Moonlight pursues the same privacy end-state with lighter, purpose-built techniques that align more naturally with Soroban’s efficient resource model.
 
 What the ecosystem lacks is a solution that keeps assets on Stellar, preserves user self-custody, provides robust privacy, and still offers hooks for compliance when required. Moonlight is designed to meet all four constraints simultaneously, laying the groundwork for confidential consumer payments, enterprise treasury operations, and regulated financial products to coexist on the same public network.
 
-## Solving the Traceability Puzzle
+## &#x20;Core Privacy Mechanisms
 
 Public blockchains achieve trust through transparency, but that same openness exposes several avenues for chain analysis. Moonlight addresses each of these with purpose-built mechanisms that preserve self-custody and composability while removing the data points analysts rely on.
 
@@ -41,6 +43,7 @@ Moonlight replaces the single running balance of an account-based ledger with a 
 Transactions are executed as _bundles_ submitted to a channel contract. A bundle may involve one or many senders and one or many receivers; the on-chain record is simply a set of inputs and a set of outputs whose total values balance. Because address, identity, and amount are no longer linked in a one-to-one pattern, observers cannot infer counterparties or payment size from the ledger alone.
 
 ```mermaid
+
 flowchart LR
   %% ── palette-based styles ──────────────────────
   classDef utxo fill:#8C7AFF,stroke:#2A2C33,color:#12131A,stroke-width:1px
@@ -55,11 +58,12 @@ flowchart LR
     %% SPEND column
     subgraph SPEND["SPEND"]
       direction TB
-      style SPEND fill:transparent,stroke:#2A2C33,color:#E8E9F0
       I1(UTXO&nbsp;#1<br/>500):::utxo
       I2(UTXO&nbsp;#2<br/>750):::utxo
       I3(UTXO&nbsp;#3<br/>800):::utxo
       I4(UTXO&nbsp;#4<br/>450):::utxo
+      total1@{ shape: "braces", label: "Total: 2.500" }
+
     end
 
     %% central processing node
@@ -68,12 +72,12 @@ flowchart LR
     %% CREATE column
     subgraph CREATE["CREATE"]
       direction TB
-      style CREATE fill:transparent,stroke:#2A2C33,color:#E8E9F0
       O1(UTXO&nbsp;#5<br/>700):::new
       O2(UTXO&nbsp;#6<br/>600):::new
       O3(UTXO&nbsp;#7<br/>800):::new
       O4(UTXO&nbsp;#8<br/>300):::new
       O5(UTXO&nbsp;#9<br/>100):::new
+	  total2@{ shape: "braces", label: "Total: 2.500" }
     end
 
     %% arrows: inputs → TX → outputs
@@ -91,7 +95,12 @@ flowchart LR
 
   %% ── lighter arrow styling (Lunar Ice) ─────────
   linkStyle default stroke:#7DAEFF,stroke-width:1.5px
-
+	style CREATE fill:transparent,stroke:#FFFFFF,color:#E8E9F0,stroke-width:0.5px
+	style SPEND fill:transparent,stroke:#FFFFFF,color:#E8E9F0,stroke-width:0.5px
+	SPEND
+	CREATE
+	style total1 color:#FFFFFF
+	style total2 color:#FFFFFF
 ```
 
 The protocol deliberately leaves tuning space for _entropy_—the degree of fragmentation a wallet applies. Low-entropy settings keep balances concentrated in fewer addresses and minimise resource use and fees; high-entropy settings involve more inputs and outputs, raising cost but maximising privacy. Wallets can expose this spectrum to users, while privacy providers can offer tailored services that further randomise bundles, aggregate multiple users, or inject their own intermediary outputs. By allowing such strategies, Moonlight makes heuristic chain analysis exponentially harder without locking participants into a single privacy posture.
@@ -181,3 +190,14 @@ Moonlight’s registry links each channel to a roster of whitelisted privacy pro
 Because channels are modular, businesses can encode asset lists, membership criteria, and verification hooks that match their regulatory stance without forking the protocol or fragmenting liquidity. Whether the goal is a controlled corporate treasury pool or a broad consumer wallet hub, the channel architecture supplies the contract-level flexibility to balance privacy with policy, while every UTXO transaction inside retains Moonlight’s core confidentiality guarantees.
 
 Because each channel’s inflows and outflows pass exclusively through its roster of vetted privacy providers, liquidity need not fracture into isolated pools. A provider that meets the admission criteria of multiple channels can serve as a native bridge: it receives a user-signed payload in one channel, creates the corresponding outputs in another, and settles both sides with a single cross-channel bundle. In the GDPR example, a European provider might operate within the region-restricted EURC pool while also participating in a broader global channel, allowing customers of both environments to transact seamlessly. Users retain full custody of their keys, regulators see funds move only through authorised entities, and the provider earns a fee for privacy-preserving, compliant interoperability, sustaining a unified liquidity surface without compromising channel policies.
+
+
+
+## Architecture
+
+### On-chain Components
+
+* **Provider Governance**
+* **Privacy Channel**
+* **UTXO Module**
+
