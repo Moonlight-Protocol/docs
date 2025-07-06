@@ -5,7 +5,7 @@
     * [The Privacy Challenge on Public DLTs](readme/whitepaper/the-privacy-challenge-on-public-dlts.md)
     * [Architecture](readme/whitepaper/architecture/README.md)
       * [On-chain Privacy Channel](readme/whitepaper/architecture/on-chain-privacy-channel.md)
-      * [Privacy Providers](readme/whitepaper/architecture/privacy-providers.md)
+      * [Trusted Privacy Providers](readme/whitepaper/architecture/trusted-privacy-providers.md)
       * [Client Layer](readme/whitepaper/architecture/client-layer.md)
 
 ## Getting Started

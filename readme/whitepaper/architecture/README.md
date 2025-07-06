@@ -14,8 +14,8 @@ Modular Privacy Channel contracts and UTXO modules codify asset rules, quorum-ba
 **Provider Layer**\
 We define a unified API surface, anchored in SEP-10 authentication and an extensible JSON-RPC schema, that all privacy providers implement for bundling, compliance checks, fee management and optional value-added services. By following the same handshake and bundle-submission workflows, providers interoperate seamlessly while retaining the freedom to introduce bespoke features such as customized KYC flows, rate-limiting policies or off-chain analytics.
 
-{% content-ref url="privacy-providers.md" %}
-[privacy-providers.md](privacy-providers.md)
+{% content-ref url="trusted-privacy-providers.md" %}
+[trusted-privacy-providers.md](trusted-privacy-providers.md)
 {% endcontent-ref %}
 
 **Client Layer**\
