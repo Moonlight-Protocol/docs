@@ -1,28 +1,4 @@
----
-icon: file-lines
----
-
-# Whitepaper
-
-{% hint style="warning" %}
-This document is a work in progress! Key concepts may still be adjusted prior to its first release.
-{% endhint %}
-
-## Abstract
-
-This paper introduces **Moonlight**, a privacy layer built on the Stellar network. Moonlight transforms each account into a constellation of unlinkable UTXOs, shielding balances and payments from public traceability. Provider-managed channels enforce asset-specific rules and bundle transfers, allowing wallets and businesses to offer confidential transactions while users keep full custody of their keys, whether those keys originate on Stellar or any other blockchain. By orchestrating the channel infrastructure and validating trusted providers, Moonlight delivers private, regulation-ready payments without changing Stellar’s underlying consensus.
-
-
-
-## Introduction
-
-Public ledgers are powerful tools for trust, but their radical transparency can expose sensitive business relationships, trading strategies, and even personal spending habits. On Stellar, every balance change is recorded in a single, permanent account, enabling chain-analysis tools to map user profiles in minutes. This tension between openness and confidentiality has grown sharper as larger institutions, bound by privacy laws and competitive secrecy, look to adopt open networks without broadcasting internal flows.
-
-Moonlight was conceived to resolve that tension without fragmenting liquidity or compromising self-custody. Rather than pushing activity to a side-chain or relying on custodial mixers, Moonlight adds an opt-in privacy layer directly on Stellar. It lets any wallet or application treat an account as a constellation of discrete UTXO addresses that are mathematically unlinkable on-chain, yet still governed by a single master secret in the user’s possession. Transfers are routed through smart-contract “channels” run by KYB-verified privacy providers; these entities handle compliance paperwork and bundle many user-signed transactions into a single on-chain submission, so external observers see only the provider address, never the user’s.
-
-The result is a system where balances and payments are private by default, regulatory needs are met through accountable providers, and control never leaves the user’s hands. Moonlight aims to make Stellar viable for everything from consumer wallets to enterprise treasuries by delivering privacy, composability, and compliance in one cohesive protocol layer.
-
-## The Privacy Challenge on Public DLTs
+# The Privacy Challenge on Public DLTs
 
 Stellar’s open ledger and other DLTs are designed for verifiability: every account, balance change, and payment path is publicly recorded and permanently accessible. That transparency fuels trust, yet it also invites sophisticated chain analysis. With a few queries, observers can correlate deposit patterns, payment routes, and order-book activity to identify counterparties and reconstruct entire cash-flow histories. For individuals, this means every purchase or salary receipt can be traced; for businesses, competitive strategies and supplier relationships are laid bare.
 
@@ -32,7 +8,7 @@ Existing workarounds each carry heavy drawbacks. Custodial methods (mixers or pr
 
 What the ecosystem lacks is a solution that keeps assets on Stellar, preserves user self-custody, provides robust privacy, and still offers hooks for compliance when required. Moonlight is designed to meet all four constraints simultaneously, laying the groundwork for confidential consumer payments, enterprise treasury operations, and regulated financial products to coexist on the same public network.
 
-## &#x20;Core Privacy Mechanisms
+## Core Privacy Mechanisms
 
 Public blockchains achieve trust through transparency, but that same openness exposes several avenues for chain analysis. Moonlight addresses each of these with purpose-built mechanisms that preserve self-custody and composability while removing the data points analysts rely on.
 
@@ -105,65 +81,45 @@ flowchart LR
 
 The protocol deliberately leaves tuning space for _entropy_—the degree of fragmentation a wallet applies. Low-entropy settings keep balances concentrated in fewer addresses and minimise resource use and fees; high-entropy settings involve more inputs and outputs, raising cost but maximising privacy. Wallets can expose this spectrum to users, while privacy providers can offer tailored services that further randomise bundles, aggregate multiple users, or inject their own intermediary outputs. By allowing such strategies, Moonlight makes heuristic chain analysis exponentially harder without locking participants into a single privacy posture.
 
-### Key Derivation Scheme
+### Standardized Address Derivation
 
 Fragmentation is effective only if it remains invisible to the user. Moonlight hides the underlying web of UTXO addresses behind a single recovery secret by defining a deterministic derivation scheme. Part of the derivation path captures **context**—information about the environment where the keys will operate, such as “Stellar mainnet” and the contract ID of the chosen channel—while another part anchors to the **root secret** the user actually controls, whether that secret is a Stellar seed, an Ethereum private key, or any other cryptographic credential. A standardized stepping function then advances an index so that wallets can generate each new address in an orderly, repeatable sequence.
 
-```mermaid fullWidth="true"
+```mermaid
 
 flowchart TB
-  TEMPLATE --> ALL
-  linkStyle default stroke:#7DAEFF,stroke-width:1.5px           %% Lunar-Ice arrows
-	style ALL fill:#2A2C33,stroke:#2A2C33,color:#FFFFFF
-	style TEMPLATE fill:#2A2C33,stroke:#2A2C33,color:#FFFFFF
+  %% ── lighter arrow styling (Lunar Ice) ─────────
+  linkStyle default stroke:#7DAEFF,stroke-width:1.5px
     
-  classDef net  fill:#8C7AFF,stroke:#2A2C33,color:#12131A,stroke-width:1px
-  classDef ch   fill:#7DAEFF,stroke:#2A2C33,color:#12131A,stroke-width:1px
-  classDef sec  fill:#FF6B6B,stroke:#2A2C33,color:#FFFFFF,stroke-width:1px
-  classDef step fill:#F3F4F6,stroke:#2A2C33,color:#12131A,stroke-width:1px
-  classDef addr fill:#7DAEFF,stroke:#2A2C33,color:#12131A,stroke-width:1px
-  classDef box  fill:#F3F4F6,stroke:#2A2C33,color:#E8E9F0
+  %% ── palette-based styles ──────────────────────
+  classDef master fill:#8C7AFF,stroke:#2A2C33,color:#12131A,stroke-width:1px
+  classDef derived fill:#7DAEFF,stroke:#2A2C33,color:#12131A,stroke-width:1px
+  classDef count fill:#F4EACB,stroke:#2A2C33,color:#12131A,stroke-width:1px
+  classDef dots fill:#F4EACB,stroke:#2A2C33,color:#12131A,stroke-width:1px
 
-  subgraph TEMPLATE["Derivation Seed Schema"]
-    direction LR
-    NET["Network<br/>ID"]:::net --- CHA["Channel<br/>ID"]:::ch --- SEC["Master<br/>Secret"]:::sec --- IDX["Step n"]:::step
-  end
+  %% ── derivation container ─────────────────────
+  subgraph DERIVATION[" "]
+    direction TB
+    style DERIVATION fill:#2A2C33,stroke:#2A2C33,color:#E8E9F0,stroke-width:0.5px
 
-  subgraph ALL["Derived Addresses"]
-    direction LR
-    class ALL box
+    MASTER["🔑 Master Keypair<br/>Deterministic Seed"]:::master
+    
+    MASTER --> KP0["Keypair #0"]:::derived
+    MASTER --> KP1["Keypair #1"]:::derived  
+    MASTER --> KP2["Keypair #2"]:::derived
+    MASTER --> DOTS["⋮"]:::dots
+    MASTER --> KPN["Keypair #n"]:::derived
 
-    subgraph SEED0["Seed #0"]
-      direction LR
-      n0["Stellar Mainnet"]:::net --- c0["Channel 0x1234"]:::ch --- s0["Master Secret"]:::sec --- i0["Step 0"]:::step
-    end
-    style SEED0 fill:#F3F4F6,stroke:#2A2C33,color:#12131A       %% light-grey seed box
-    kp0["keypair #0"]:::addr
-    SEED0 --> kp0
+    %% Count indicators
+    COUNT0["0"]:::count
+    COUNT1["1"]:::count
+    COUNT2["2"]:::count
+    COUNTN["n"]:::count
 
-    subgraph SEED1["Seed #1"]
-      direction LR
-      n1["Stellar Mainnet"]:::net --- c1["Channel 0x1234"]:::ch --- s1["Master Secret"]:::sec --- i1["Step 1"]:::step
-    end
-    style SEED1 fill:#F3F4F6,stroke:#2A2C33,color:#12131A
-    kp1["keypair #1"]:::addr
-    SEED1 --> kp1
-
-    subgraph SEED2["Seed #2"]
-      direction LR
-      n2["Stellar Mainnet"]:::net --- c2["Channel 0x1234"]:::ch --- s2["Master Secret"]:::sec --- i2["Step 2"]:::step
-    end
-    style SEED2 fill:#F3F4F6,stroke:#2A2C33,color:#12131A
-    kp2["keypair #2"]:::addr
-    SEED2 --> kp2
-
-    subgraph SEED3["Seed #3"]
-      direction LR
-      n3["Stellar Mainnet"]:::net --- c3["Channel 0x1234"]:::ch --- s3["Master Secret"]:::sec --- i3["Step 3"]:::step
-    end
-    style SEED3 fill:#F3F4F6,stroke:#2A2C33,color:#12131A
-    kp3["keypair #3"]:::addr
-    SEED3 --> kp3
+    KP0 -.- COUNT0
+    KP1 -.- COUNT1
+    KP2 -.- COUNT2
+    KPN -.- COUNTN
   end
 ```
 
@@ -189,15 +145,4 @@ Moonlight’s registry links each channel to a roster of whitelisted privacy pro
 
 Because channels are modular, businesses can encode asset lists, membership criteria, and verification hooks that match their regulatory stance without forking the protocol or fragmenting liquidity. Whether the goal is a controlled corporate treasury pool or a broad consumer wallet hub, the channel architecture supplies the contract-level flexibility to balance privacy with policy, while every UTXO transaction inside retains Moonlight’s core confidentiality guarantees.
 
-Because each channel’s inflows and outflows pass exclusively through its roster of vetted privacy providers, liquidity need not fracture into isolated pools. A provider that meets the admission criteria of multiple channels can serve as a native bridge: it receives a user-signed payload in one channel, creates the corresponding outputs in another, and settles both sides with a single cross-channel bundle. In the GDPR example, a European provider might operate within the region-restricted EURC pool while also participating in a broader global channel, allowing customers of both environments to transact seamlessly. Users retain full custody of their keys, regulators see funds move only through authorised entities, and the provider earns a fee for privacy-preserving, compliant interoperability, sustaining a unified liquidity surface without compromising channel policies.
-
-
-
-## Architecture
-
-### On-chain Components
-
-* **Provider Governance**
-* **Privacy Channel**
-* **UTXO Module**
-
+Because each channel’s inflows and outflows pass exclusively through its roster of vetted privacy providers, liquidity need not fracture into isolated pools. A provider that meets the admission criteria of multiple channels can serve as a native bridge: it receives a user-signed payload in one channel, creates the corresponding outputs in another, and settles both sides with a single cross-channel bundle. In the GDPR example, a European provider might operate within the region-restricted EURC pool while also participating in a broader global channel, allowing customers of both environments to transact seamlessly. Users retain full custody of their keys, regulators see funds move only through authorized entities, and the provider earns a fee for privacy-preserving, compliant interoperability, sustaining a unified liquidity surface without compromising channel policies.
