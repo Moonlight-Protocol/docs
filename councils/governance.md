@@ -36,9 +36,3 @@ Every governance action (`add_provider`, `remove_provider`, `set_admin`) now req
 - Proposal and voting flows (if needed, the council organizes this themselves)
 
 A council is effectively a multi-sig Stellar account that administers one or more Channel Auth contracts. The protocol does not prescribe how councils organize — it provides the primitives and lets each council define their own process.
-
-## Open Questions
-
-- Should there be a shared governance contract that manages multiple channels (a true "quorum"), or is per-channel auth with shared multi-sig admin sufficient?
-- Should the provider threshold (currently hardcoded to 1) be configurable per channel?
-- Should there be a way to enumerate all registered providers (currently only point lookups are supported)?
