@@ -5,7 +5,7 @@ A Privacy Channel is the on-chain smart contract where private transactions actu
 ## One Asset, One Quorum
 
 Each channel is configured with:
-- **One Stellar asset** — either a SEP-41 contract token or a native asset via its SAC (Stellar Asset Contract). In the local development environment, TXLM is used as a stand-in. On testnet/mainnet, the native XLM SAC would be used for XLM channels.
+- **One Stellar asset** — either a SEP-41 contract token or a native asset via its SAC (Stellar Asset Contract).
 - **One quorum** — the channel inherits its provider registry from the quorum it belongs to.
 
 The channel does not care whether the token is custom or native, as long as it implements the standard token interface (transfer, balance, etc.).
