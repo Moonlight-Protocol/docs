@@ -2,11 +2,9 @@
 icon: landmark
 ---
 
-# Councils (Quorums)
+# Councils
 
-A Council — referred to as a **quorum** at the smart contract level — is the governance layer that organizes Privacy Providers into trusted groups. Every provider must belong to at least one quorum to operate within the Moonlight protocol.
-
-This section covers the role of councils, how they work, and how they relate to channels and providers.
+In Moonlight, provider authorization is managed per-channel through the **Channel Auth contract**. This section covers how provider management works, how channels relate to their auth contracts, and the current governance model.
 
 {% content-ref url="what-is-a-quorum.md" %}
 [what-is-a-quorum.md](what-is-a-quorum.md)

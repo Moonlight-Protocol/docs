@@ -1,71 +1,40 @@
 # What is a Quorum?
 
-A quorum is a smart contract deployed on Stellar's Soroban platform that manages a group of Privacy Providers operating together in a shared trusted context. It is the on-chain representation of a council.
+In Moonlight, provider authorization is handled by the **Channel Auth contract** — sometimes referred to as "quorum auth." Each Privacy Channel is deployed with its own Channel Auth contract that maintains the list of authorized providers for that channel.
 
-## Purpose
+## What It Does
 
-The quorum contract serves three functions:
+The Channel Auth contract exposes a minimal interface:
 
-1. **Provider registry** — maintains an on-chain list of authorized Privacy Providers. Only providers registered in the quorum can submit bundles to channels governed by it.
-2. **Channel ownership** — a quorum controls one or more Privacy Channels. Each channel is deployed under a specific quorum and inherits its provider set.
-3. **Rule enforcement** — defines the operating rules for its providers. Different quorums can operate under different regulations, enabling regional or compliance-specific groupings.
+| Function | Who can call | What it does |
+|---|---|---|
+| `add_provider(provider)` | Admin only | Register a provider's address |
+| `remove_provider(provider)` | Admin only | Unregister a provider |
+| `is_provider(provider)` | Anyone | Check if an address is registered |
+| `set_admin(new_admin)` | Admin only | Transfer admin rights |
+| `admin()` | Anyone | Read current admin address |
 
-## Structure
+That's the full governance surface today.
 
-```
-Quorum (Council)
-├── Admin (manages the quorum)
-├── Registered Providers
-│   ├── Provider A (key pair identifier)
-│   ├── Provider B (key pair identifier)
-│   └── ...
-└── Channels
-    ├── Channel: XLM
-    ├── Channel: USDC
-    └── ...
-```
+## How It Works
 
-A single quorum can govern multiple channels (one per asset). A single provider can be registered in multiple quorums, enabling it to serve different regions or compliance regimes.
+Each Privacy Channel is deployed with a reference to its Channel Auth contract. When a provider submits a bundle to the channel, the channel calls `require_provider()` on the auth contract to verify the submitting address is registered. If not, the entire batch is rejected.
 
-## How It Works Today
+The admin is a single Soroban Address set at deployment time. This address controls all provider lifecycle operations for that channel.
 
-In the current protocol version, quorums are managed by a **centralized admin**:
+## One Auth Contract Per Channel
 
-- The admin deploys the quorum contract
-- The admin registers and removes providers by adding/removing their key pair identifiers
-- The admin deploys channels under the quorum
-- There is no on-chain voting, policy enforcement, or automated governance
+Each channel has its own Channel Auth contract with its own admin and its own provider set. There is no shared "quorum" contract that governs multiple channels. If the same providers need to operate across multiple channels, they must be registered in each channel's auth contract individually.
 
-This is sufficient for the PoC and early Testnet phases. Governance mechanisms are planned for later milestones.
+## Provider Threshold
 
-## Regional Grouping
-
-Quorums enable natural regional or jurisdictional grouping. For example:
-
-- A **South American quorum** with banks from Argentina, Brazil, and Chile operating under shared regional regulations
-- A **European quorum** with providers subject to GDPR and MiCA requirements
-- A **global quorum** with relaxed requirements for general-purpose privacy
-
-Each quorum sets its own rules for provider admission, data retention, and compliance. Providers choose which quorums to join based on their business model and regulatory environment.
-
-## Relationship to Privacy Channels
-
-A Privacy Channel is always deployed under a specific quorum. The channel inherits the quorum's provider registry — only providers registered in that quorum can submit bundles to the channel.
-
-Each channel handles exactly one asset (e.g., XLM, USDC). A quorum can have multiple channels for different assets, but each channel belongs to exactly one quorum.
-
-This means:
-- Providers in the same quorum share access to the same set of channels
-- Users connected to a provider can access any channel that provider's quorum controls
-- Liquidity is scoped to the quorum level — channels in different quorums are separate pools
+The current implementation requires exactly one registered provider signature per transaction (hardcoded threshold of 1). The provider signs with Ed25519, and UTXO owners sign with secp256r1. Both signatures are required.
 
 ## Relationship to Privacy Providers
 
-Providers must be registered in a quorum to operate. Registration means the provider's secp256r1 public key is added to the quorum's on-chain registry.
+A provider registered in a channel's auth contract can:
+- Submit bundles to that channel
+- Process deposits and withdrawals for users on that channel
+- Add mixing operations to bundles within that channel
 
-A provider registered in a quorum can:
-- Submit bundles to any channel governed by that quorum
-- Process deposits and withdrawals for users on those channels
-- Add mixing operations to bundles within those channels
-
-A provider can be registered in multiple quorums simultaneously. This enables cross-quorum operation — a provider serving both a regional and a global quorum, for example.
+To operate across multiple channels, a provider must be registered in each channel's auth contract separately.

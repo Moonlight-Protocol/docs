@@ -1,12 +1,12 @@
 # Channels
 
-A Privacy Channel is the on-chain smart contract where private transactions actually happen. It hosts the UTXO ledger for a single asset within a single quorum.
+A Privacy Channel is the on-chain smart contract where private transactions happen. It hosts the UTXO ledger for a single asset.
 
-## One Asset, One Quorum
+## One Asset Per Channel
 
 Each channel is configured with:
 - **One Stellar asset** — either a SEP-41 contract token or a native asset via its SAC (Stellar Asset Contract).
-- **One quorum** — the channel inherits its provider registry from the quorum it belongs to.
+- **One Channel Auth contract** — maintains the provider registry and admin for this channel.
 
 The channel does not care whether the token is custom or native, as long as it implements the standard token interface (transfer, balance, etc.).
 
@@ -21,18 +21,16 @@ The channel does not care whether the token is custom or native, as long as it i
 
 All liquidity within a channel is fully collateralized by the underlying asset. The total value of unspent UTXOs equals the channel's token holdings at all times.
 
-Liquidity is scoped to the channel level:
-- Two channels for the same asset in different quorums maintain separate pools
-- Cross-channel transfers require a provider registered in both quorums to bridge the operation
+Each channel is an independent liquidity pool. Cross-channel transfers require a provider registered in both channels to bridge the operation.
 
 ## Channel Creation
 
-In the current protocol version, channels are deployed by the quorum admin:
+Channels are deployed with two key parameters:
+1. The asset the channel handles
+2. The Channel Auth contract address that controls its provider registry
 
-1. Admin deploys the channel contract, specifying the asset and the governing quorum
-2. The channel reads its provider registry from the quorum
-3. Providers can immediately begin submitting bundles
+The Channel Auth contract's admin manages the provider set for the channel.
 
 {% hint style="info" %}
-Channel creation parameters (asset, quorum, initial configuration) are set at deployment time. The whitepaper's On-chain Privacy Channel section covers the technical internals in detail.
+The whitepaper's On-chain Privacy Channel section covers the technical internals (UTXO module, transaction processing, liquidity management) in detail.
 {% endhint %}
