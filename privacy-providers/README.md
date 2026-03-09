@@ -23,3 +23,7 @@ This section covers everything needed to understand, evaluate, and operate a Pri
 {% content-ref url="compliance-and-audit.md" %}
 [compliance-and-audit.md](compliance-and-audit.md)
 {% endcontent-ref %}
+
+{% content-ref url="entropy-and-privacy.md" %}
+[entropy-and-privacy.md](entropy-and-privacy.md)
+{% endcontent-ref %}
