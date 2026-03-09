@@ -17,6 +17,13 @@
   * [Compliance and Audit](privacy-providers/compliance-and-audit.md)
   * [Entropy and Privacy](privacy-providers/entropy-and-privacy.md)
 
+## Councils
+
+* [Overview](councils/README.md)
+  * [What is a Quorum?](councils/what-is-a-quorum.md)
+  * [Channels](councils/channels.md)
+  * [Governance](councils/governance.md)
+
 ## Getting Started
 
 * [Quickstart](getting-started/quickstart.md)
