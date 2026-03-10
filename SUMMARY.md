@@ -8,6 +8,15 @@
       * [Trusted Privacy Providers](readme/whitepaper/architecture/trusted-privacy-providers.md)
       * [Client Layer](readme/whitepaper/architecture/client-layer.md)
 
+## Privacy Providers
+
+* [Overview](privacy-providers/README.md)
+  * [What is a Privacy Provider?](privacy-providers/what-is-a-privacy-provider.md)
+  * [Requirements](privacy-providers/requirements.md)
+  * [Operating a Provider](privacy-providers/operating-a-provider.md)
+  * [Compliance and Audit](privacy-providers/compliance-and-audit.md)
+  * [Entropy and Privacy](privacy-providers/entropy-and-privacy.md)
+
 ## Getting Started
 
 * [Quickstart](getting-started/quickstart.md)
