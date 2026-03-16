@@ -25,7 +25,12 @@ In the current protocol version, quorum registration is managed by a centralized
 - **Uptime** — providers must maintain availability for their users. Downtime means users connected to that provider cannot transact privately.
 - **Bundle processing** — the mempool must be configured to handle expected throughput. Key parameters include slot capacity, executor parallelism, transaction expiration offsets, and priority weights.
 - **Treasury management** — the treasury account must be kept funded. The reference implementation includes automatic OpEx top-up logic.
-- **Security** — private keys (both the provider identity key pair and treasury account keys) must be stored securely. The reference implementation should be deployed behind appropriate network security measures.
+- **Security** — the provider platform uses three separate secrets, each with a distinct role:
+  - **Provider identity key** (`PROVIDER_SK`) — Ed25519. Signs bundles and SEP-10 auth challenges. Compromise allows impersonation of the PP but no access to funds.
+  - **OpEx/Treasury key** (`OPEX_SECRET`) — Ed25519. Submits transactions and manages operational funds. Compromise allows spending funds but not impersonating the PP.
+  - **Service auth secret** (`SERVICE_AUTH_SECRET`) — 32 random bytes. Signs JWT session tokens for the API. Compromise allows forging user sessions.
+
+  All secrets must be stored securely. In hosted environments (e.g. Fly.io), use the platform's secret management to inject keys at runtime. The key separation ensures no single compromise gives full control.
 
 ## Business Model
 
