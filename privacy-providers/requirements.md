@@ -11,7 +11,7 @@ This page outlines what is needed to become and operate a Privacy Provider on th
 
 ## Registration
 
-1. Generate a secp256r1 key pair that will serve as the provider's identity.
+1. Generate an Ed25519 key pair that will serve as the provider's identity.
 2. Obtain registration in a quorum (council) smart contract. The quorum administrator must add the provider's public key to the on-chain registry.
 3. Fund a treasury account with enough XLM to cover operational costs.
 4. Deploy and configure the provider platform, pointing it at the target network and channels.
