@@ -14,7 +14,7 @@ In the current implementation, a single admin address controls each quorum. This
 
 An Ed25519 key pair that identifies a Privacy Provider within the protocol. This key is registered in a quorum contract and is used to sign bundles, certifying that the provider reviewed and approved the transactions.
 
-This key is **not** a Stellar account. It exists purely as a cryptographic identity. On-chain, it appears only as the registered provider address in the quorum contract.
+The Ed25519 public key maps to a Stellar account address (`G...`) via the standard Stellar key encoding. It does not need to be a funded on-chain account — it can exist purely as a cryptographic identity. However, because it is a valid Stellar address, it can optionally be set up as a funded account with multiple signers, enabling multi-signature control over the provider identity.
 
 The provider identity key is what links a bundle to a specific provider during audits. If a regulator needs to trace a transaction, this key identifies which provider processed it.
 
@@ -43,7 +43,7 @@ Users may or may not have a funded Stellar account:
 | Key / Account | On-chain? | Purpose | Who holds it |
 |---------------|-----------|---------|-------------|
 | Admin | Yes (funded) | Deploy contracts, register providers, update config | Council operator(s) |
-| Provider identity | No (key pair only) | Sign bundles, identify provider for audit | PP operator |
+| Provider identity | Stellar Address (not necessarily funded) | Sign bundles, identify provider for audit. Can have multisig signers. | PP operator |
 | OpEx / Treasury | Yes (funded) | Pay fees, move funds in/out of channels | PP operator |
 | User root key | No (key pair only) | Derive channel addresses, sign UTXO operations | End user (wallet) |
 | User derived addresses | No (virtual) | Own UTXOs within a channel | Derived from user root key |
