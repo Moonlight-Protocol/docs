@@ -61,6 +61,4 @@ Providers should monitor:
 - API availability and response times
 - Bundle success/failure rates
 
-{% hint style="info" %}
-The protocol roadmap includes OTEL (OpenTelemetry) tracing for provider operations. A dedicated PP operator dashboard is planned to surface these metrics.
-{% endhint %}
+The [Provider Console](provider-console.md) provides a web dashboard for monitoring all of these. For deeper observability, the provider platform supports OpenTelemetry tracing — see the Analytics section of the console docs for Grafana panel integration.

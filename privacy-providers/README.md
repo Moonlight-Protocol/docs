@@ -24,6 +24,10 @@ This section covers everything needed to understand, evaluate, and operate a Pri
 [mempool.md](mempool.md)
 {% endcontent-ref %}
 
+{% content-ref url="provider-console.md" %}
+[provider-console.md](provider-console.md)
+{% endcontent-ref %}
+
 {% content-ref url="compliance-and-audit.md" %}
 [compliance-and-audit.md](compliance-and-audit.md)
 {% endcontent-ref %}
