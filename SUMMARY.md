@@ -21,6 +21,7 @@
   * [Requirements](privacy-providers/requirements.md)
   * [Operating a Provider](privacy-providers/operating-a-provider.md)
   * [Mempool](privacy-providers/mempool.md)
+  * [Provider Console](privacy-providers/provider-console.md)
   * [Compliance and Audit](privacy-providers/compliance-and-audit.md)
   * [Entropy and Privacy](privacy-providers/entropy-and-privacy.md)
 
