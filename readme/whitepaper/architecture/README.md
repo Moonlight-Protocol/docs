@@ -5,7 +5,7 @@ Moonlight is designed as a layered protocol that prescribes core guidelines and 
 <figure><img src="../../../.gitbook/assets/image.png" alt=""><figcaption><p>High-level protocol overview</p></figcaption></figure>
 
 **On-Chain Privacy Channels**\
-Modular Privacy Channel contracts and UTXO modules codify asset rules, quorum-based governance, and atomic bundle execution directly on Stellar’s ledger. These contracts validate bundle integrity, enforce on-chain membership criteria, and record state transitions in an append-only log. Any extension, whether for new asset types, governance thresholds or custom fee strategies, plugs into clearly defined entry points, keeping all privacy guarantees verifiable under the network’s immutable security.
+Modular Privacy Channel contracts and UTXO modules codify asset rules, council-based governance, and atomic bundle execution directly on Stellar’s ledger. These contracts validate bundle integrity, enforce on-chain membership criteria, and record state transitions in an append-only log. Any extension, whether for new asset types, governance thresholds or custom fee strategies, plugs into clearly defined entry points, keeping all privacy guarantees verifiable under the network’s immutable security.
 
 {% content-ref url="on-chain-privacy-channel.md" %}
 [on-chain-privacy-channel.md](on-chain-privacy-channel.md)

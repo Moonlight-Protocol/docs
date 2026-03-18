@@ -23,13 +23,13 @@ For ramp deposits, additionally:
 ## Audit Flow
 
 1. **Identification** — an auditing organization observes a bundle on-chain and identifies the submitting provider from the treasury address.
-2. **Contact** — the auditor contacts the provider through established channels (defined by the quorum's compliance policy).
+2. **Contact** — the auditor contacts the provider through established channels (defined by the council's compliance policy).
 3. **Disclosure** — the provider produces the relevant session and bundle records for the auditor's review.
 4. **Scope** — the provider can only disclose records for transactions it processed. It has no visibility into transactions handled by other providers, even within the same channel.
 
 ## Council Oversight
 
-Councils (quorums) set the compliance requirements for their registered providers. This may include:
+Councils set the compliance requirements for their registered providers. This may include:
 
 - Minimum data retention periods
 - Required KYC/KYB procedures for user onboarding

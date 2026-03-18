@@ -28,7 +28,7 @@
 ## Councils
 
 * [Overview](councils/README.md)
-  * [What is a Quorum?](councils/what-is-a-quorum.md)
+  * [What is a Council?](councils/what-is-a-council.md)
   * [Channels](councils/channels.md)
   * [Governance](councils/governance.md)
 
