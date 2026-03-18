@@ -1,6 +1,6 @@
-# What is a Quorum?
+# What is a Council?
 
-In Moonlight, provider authorization is handled by the **Channel Auth contract** — sometimes referred to as "quorum auth." Each Privacy Channel is deployed with its own Channel Auth contract that maintains the list of authorized providers for that channel.
+In Moonlight, a council is the governance entity that controls which providers can operate on a channel. On-chain, this is implemented by the **Channel Auth contract** — each Privacy Channel is deployed with its own Channel Auth contract that maintains the list of authorized providers for that channel.
 
 ## What It Does
 
@@ -22,9 +22,9 @@ Each Privacy Channel is deployed with a reference to its Channel Auth contract. 
 
 The admin is a single Soroban Address set at deployment time. This address controls all provider lifecycle operations for that channel.
 
-## One Auth Contract Per Channel
+## One Council Per Channel
 
-Each channel has its own Channel Auth contract with its own admin and its own provider set. There is no shared "quorum" contract that governs multiple channels. If the same providers need to operate across multiple channels, they must be registered in each channel's auth contract individually.
+Each channel has its own Channel Auth contract with its own admin and its own provider set. There is no shared council contract that governs multiple channels. If the same providers need to operate across multiple channels, they must be registered in each channel's auth contract individually.
 
 ## Provider Threshold
 
@@ -32,9 +32,9 @@ The current implementation requires exactly one registered provider signature pe
 
 ## Relationship to Privacy Providers
 
-A provider registered in a channel's auth contract can:
+A provider registered in a channel's council can:
 - Submit bundles to that channel
 - Process deposits and withdrawals for users on that channel
 - Add mixing operations to bundles within that channel
 
-To operate across multiple channels, a provider must be registered in each channel's auth contract separately.
+To operate across multiple channels, a provider must be registered in each channel's council separately.

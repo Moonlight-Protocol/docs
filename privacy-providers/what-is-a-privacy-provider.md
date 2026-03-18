@@ -7,7 +7,7 @@ A Privacy Provider is an authorized entity that acts as the relay layer between 
 Every Privacy Provider has two distinct identities:
 
 **Key pair identifier (off-chain)**
-An Ed25519 key pair that identifies the provider within the protocol. This key pair is registered in a quorum (council) smart contract and is used to sign and authorize bundles. The public key maps to a Stellar account address (G...) but it does not need to be a funded on-chain account — it exists as a cryptographic identity.
+An Ed25519 key pair that identifies the provider within the protocol. This key pair is registered in a council smart contract and is used to sign and authorize bundles. The public key maps to a Stellar account address (G...) but it does not need to be a funded on-chain account — it exists as a cryptographic identity.
 
 **Treasury account (on-chain)**
 A funded Stellar account that pays network fees and moves funds in and out of channels on behalf of users. This is the address that appears on-chain when bundles are submitted. One treasury account per provider.
@@ -30,6 +30,6 @@ A funded Stellar account that pays network fees and moves funds in and out of ch
 
 ## Relationship to Councils
 
-Every provider must be registered in at least one quorum (council) smart contract. The quorum administrator adds the provider's key pair identifier to the on-chain registry. Only registered providers can submit bundles to channels governed by that quorum.
+Every provider must be registered in at least one council smart contract. The council administrator adds the provider's key pair identifier to the on-chain registry. Only registered providers can submit bundles to channels governed by that council.
 
-A provider can be registered in multiple quorums, enabling it to serve channels across different regions, asset types, or compliance regimes.
+A provider can be registered in multiple councils, enabling it to serve channels across different regions, asset types, or compliance regimes.

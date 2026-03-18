@@ -6,13 +6,13 @@ Moonlight uses several distinct account types and key pairs, each with a specifi
 
 ### Admin Account
 
-A funded Stellar account that deploys and initializes smart contracts. The admin registers providers in quorum contracts and can update contract configuration.
+A funded Stellar account that deploys and initializes smart contracts. The admin registers providers in council contracts and can update contract configuration.
 
-In the current implementation, a single admin address controls each quorum. This address can be a standard Stellar account or a multi-signature account, enabling shared governance without any contract changes. See [Governance](../councils/governance.md) for details on the multi-sig path.
+In the current implementation, a single admin address controls each council. This address can be a standard Stellar account or a multi-signature account, enabling shared governance without any contract changes. See [Governance](../councils/governance.md) for details on the multi-sig path.
 
 ### Provider Identity Key (Off-chain)
 
-An Ed25519 key pair that identifies a Privacy Provider within the protocol. This key is registered in a quorum contract and is used to sign bundles, certifying that the provider reviewed and approved the transactions.
+An Ed25519 key pair that identifies a Privacy Provider within the protocol. This key is registered in a council contract and is used to sign bundles, certifying that the provider reviewed and approved the transactions.
 
 The Ed25519 public key maps to a Stellar account address (`G...`) via the standard Stellar key encoding. It does not need to be a funded on-chain account — it can exist purely as a cryptographic identity. However, because it is a valid Stellar address, it can optionally be set up as a funded account with multiple signers, enabling multi-signature control over the provider identity.
 
@@ -52,4 +52,4 @@ Users may or may not have a funded Stellar account:
 
 Provider identity keys and OpEx account keys must be stored securely. In a hosted environment (e.g., Fly.io), use the platform's secret management (Fly.io secrets, similar to AWS Secrets Manager) to inject keys at runtime rather than storing them in configuration files or environment variables at rest.
 
-Key rotation for the OpEx account is straightforward — fund a new account, update the provider configuration, and drain the old account. Provider identity key rotation requires re-registration in the quorum contract, since the identity key is what the contract uses to verify bundle signatures.
+Key rotation for the OpEx account is straightforward — fund a new account, update the provider configuration, and drain the old account. Provider identity key rotation requires re-registration in the council contract, since the identity key is what the contract uses to verify bundle signatures.
