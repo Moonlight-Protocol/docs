@@ -30,6 +30,16 @@ Each channel has its own Channel Auth contract with its own admin and its own pr
 
 The current implementation requires exactly one registered provider signature per transaction (hardcoded threshold of 1). The provider signs with Ed25519, and UTXO owners sign with secp256r1. Both signatures are required.
 
+## Jurisdiction
+
+Jurisdiction belongs to the council, not to individual providers. A council governs a regulatory region — for example, "South American XLM" or "European USDC." Providers inherit jurisdiction from the councils they are registered in.
+
+A provider registered in multiple councils serves multiple jurisdictions. This means:
+
+- The council declares its jurisdiction(s) during registration on the network dashboard
+- Providers don't self-report jurisdictions — jurisdiction is determined by council membership
+- When a user sends a transaction, the jurisdiction pair (from → to) comes from which councils the sender's and receiver's providers belong to
+
 ## Relationship to Privacy Providers
 
 A provider registered in a channel's council can:

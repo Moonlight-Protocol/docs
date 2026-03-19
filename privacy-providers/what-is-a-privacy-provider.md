@@ -33,3 +33,5 @@ A funded Stellar account that pays network fees and moves funds in and out of ch
 Every provider must be registered in at least one council smart contract. The council administrator adds the provider's key pair identifier to the on-chain registry. Only registered providers can submit bundles to channels governed by that council.
 
 A provider can be registered in multiple councils, enabling it to serve channels across different regions, asset types, or compliance regimes.
+
+Jurisdiction belongs to the council, not to the provider. A provider's jurisdiction is determined by which councils it is registered in. See [What is a Council?](../councils/what-is-a-council.md#jurisdiction) for details.
