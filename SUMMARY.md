@@ -32,6 +32,14 @@
   * [Channels](councils/channels.md)
   * [Governance](councils/governance.md)
 
+## SDK
+
+* [Overview](sdk/README.md)
+  * [Getting Started](sdk/getting-started.md)
+  * [Core Concepts](sdk/core-concepts.md)
+  * [API Reference](sdk/api-reference.md)
+  * [Integration Guide](sdk/integration-guide.md)
+
 ## Getting Started
 
 * [Quickstart](getting-started/quickstart.md)
