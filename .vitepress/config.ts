@@ -5,11 +5,9 @@ export default defineConfig({
   description:
     "Documentation for the Moonlight protocol — a privacy layer built on Stellar",
 
-  head: [["link", { rel: "icon", href: "/favicon.ico" }]],
+  head: [["link", { rel: "icon", href: "/favicon.png", type: "image/png" }]],
 
   themeConfig: {
-    logo: "/logo.svg",
-
     nav: [
       { text: "Protocol", link: "/protocol/" },
       { text: "SDK", link: "/sdk/" },
