@@ -16,9 +16,9 @@ This page outlines what is needed to become and operate a Privacy Provider on th
 3. Fund a treasury account with enough XLM to cover operational costs.
 4. Deploy and configure the provider platform, pointing it at the target network and channels.
 
-{% hint style="info" %}
+::: info
 In the current protocol version, council registration is managed by a centralized admin. Future versions will introduce governance mechanisms for provider onboarding.
-{% endhint %}
+:::
 
 ## Operational Requirements
 
@@ -39,6 +39,6 @@ The provider's revenue comes from fees attached to bundle processing. The curren
 - **Per-transaction fees** — a fixed or variable fee added to each bundle processed.
 - **Ramp fees** — fees for third-party deposit flows where the provider handles fiat or cross-chain onboarding.
 
-{% hint style="warning" %}
+::: warning
 Fee structures and business models are still evolving. Future protocol versions may introduce dynamic pricing, rent models for pool participation, and standardized fee discovery for wallets.
-{% endhint %}
+:::

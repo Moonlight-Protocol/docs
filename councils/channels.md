@@ -31,6 +31,6 @@ Channels are deployed with two key parameters:
 
 The Channel Auth contract's admin manages the provider set for the channel.
 
-{% hint style="info" %}
+::: info
 The whitepaper's On-chain Privacy Channel section covers the technical internals (UTXO module, transaction processing, liquidity management) in detail.
-{% endhint %}
+:::

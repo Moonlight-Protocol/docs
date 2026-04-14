@@ -1,12 +1,8 @@
----
-icon: file-lines
----
-
 # Whitepaper
 
-{% hint style="warning" %}
+::: warning
 This document is a work in progress! Key concepts may still be adjusted prior to its first release.
-{% endhint %}
+:::
 
 ## Abstract
 

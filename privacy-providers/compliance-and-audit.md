@@ -36,9 +36,9 @@ Councils set the compliance requirements for their registered providers. This ma
 - Reporting obligations and formats
 - Response time requirements for audit requests
 
-{% hint style="warning" %}
+::: warning
 Council governance and compliance policy enforcement mechanisms are under development. The current protocol version uses centralized admin control. Future versions will introduce on-chain policy definitions and automated compliance checks.
-{% endhint %}
+:::
 
 ## Data Retention
 
