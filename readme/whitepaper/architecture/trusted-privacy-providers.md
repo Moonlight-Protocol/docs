@@ -16,7 +16,7 @@ Providers expose a public API that follows a common specification.
 * **Audit responsibility**\
   Each provider keeps its own logs and audit records, binding every off-chain request to the client’s public key obtained during session authentication. This audit trail supports regulatory review without compromising user privacy.
 
-{% hint style="info" %}
+::: info
 As part of V1: A reference implementation of the provider server, including the full API and SEP-10 authentication flow, will be released as open-source software that providers can deploy as-is or extend to meet custom requirements.
-{% endhint %}
+:::
 

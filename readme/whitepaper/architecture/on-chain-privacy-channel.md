@@ -21,13 +21,13 @@ The UTXO module implements Moonlight’s balance-management logic, replacing a s
 
 **UTXO states:** These are the possible states a UTXO can be represented within the Channel context.
 
-* **`Free`:** When no storage entry exists for the address, it means the address haven't been used in the past its implicit balance is zero.&#x20;
+* **`Free`:** When no storage entry exists for the address, it means the address haven't been used in the past its implicit balance is zero. 
 * **`Unspent`:** The address is recorded with a positive balance that can serve as an input. This means the a portion of the liquidity is allocated to this address.
 * **`Spent`:** The address is recorded with balance zero and can never be used again. This indicates the address has been consumed in past transactions and cannot be reused.
 
 **UTXO operations:** These are the core operations that can be executed for a UTXO in order to change its state.
 
-* **Create:** Allocates balance to an address that is currently in the Free state, inserting a storage entry and marking it Unspent.&#x20;
+* **Create:** Allocates balance to an address that is currently in the Free state, inserting a storage entry and marking it Unspent. 
 * **Spend:** Consumes one or more Unspent outputs, sets their stored balances to zero, and marks them Spent. A spend frees the corresponding value for redistribution within the same execution context.
 
 **Bundles:** A bundle is a set of instructions that combines multiple UTXO operations and signatures to authorize this operations atomically within a single ledger update.

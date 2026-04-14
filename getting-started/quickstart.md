@@ -1,6 +1,2 @@
----
-icon: bullseye-arrow
----
-
 # Quickstart
 

@@ -13,9 +13,9 @@ The console uses Ed25519 challenge/verify authentication. The operator signs a r
 5. The provider checks that the signer is authorized on the PP's Stellar account (supports multisig via Horizon signers lookup).
 6. A JWT session token is returned and used for all subsequent API calls.
 
-{% hint style="info" %}
+::: info
 Any signer on the provider's Stellar account can authenticate. This means if your provider key has multisig configured, any authorized signer can access the console.
-{% endhint %}
+:::
 
 ## Views
 

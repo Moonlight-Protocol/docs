@@ -58,6 +58,6 @@ Each provider instance runs its own in-memory mempool backed by a database. Bund
 
 For providers that need to scale horizontally (multiple instances for availability or throughput), the database persistence layer provides a natural coordination point. Multiple instances can share the same database and coordinate slot claiming through row-level locking.
 
-{% hint style="info" %}
+::: info
 A larger mempool — whether from higher user volume or from multiple providers pooling bundles — increases the mixing set for each batch. This directly improves privacy for all users in that batch, at every entropy level.
-{% endhint %}
+:::
